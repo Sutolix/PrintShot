@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import './styles.css'
+
 import Base64Downloader from 'react-base64-downloader';
 
 import api from '../../services/api'
@@ -23,6 +25,8 @@ export default function PrintShot() {
   function handleQuery(e){
 		e.preventDefault();
 
+    if (siteUrl === '') return
+
     printGenerator({
       url: siteUrl
     })
@@ -36,14 +40,20 @@ export default function PrintShot() {
       	<input
       		type="text"
       		value={siteUrl}
+          placeholder="https://google.com"
       		onChange={e => setSiteUrl(e.target.value)}
       	/>
-        <button type="submit">Gerar</button>
+        <button
+          type="submit"
+          className="btn-generate"
+        >
+            Gerar
+        </button>
       </form>
       {awaitingQuery ? <></> : 
         loadImage
-        ? <div>Carregando Image</div>
-        : <Base64Downloader base64={imageData} downloadName="screenshot">
+        ? <span class="loading-image">Carregando Image</span>
+        : <Base64Downloader base64={imageData} downloadName="screenshot" className="btn-download">
             Click para baixar
           </Base64Downloader>
       }
